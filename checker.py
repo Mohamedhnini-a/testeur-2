@@ -19,8 +19,8 @@ SOURCE_URLS = [
 XRAY = "./xray/xray"
 
 TEST_URLS = [
-    "http://cp.cloudflare.com/generate_204",
-    "http://www.gstatic.com/generate_204",
+    "http://cachefly.cachefly.net/1mb.test",
+    "http://cp.cloudflare.com/",
 ]
 
 TIMEOUT = 5
