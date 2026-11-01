@@ -12,7 +12,7 @@ import requests
 
 SOURCE_URLS = [
 
-    "https://github.com/Mohamedhnini-a/testeur/raw/refs/heads/main/working_configs.txt",
+    
     "https://github.com/Mohamedhnini-a/Neverstops-2/raw/refs/heads/main/sub.txt"
     
 ]
