@@ -23,8 +23,8 @@ TEST_URLS = [
 ]
 
 TIMEOUT = 5
-MAX_WORKERS = 15 # نقصناها لـ 15 باش ما يتخنقش السيرفر
-BASE_PORT = 20000
+MAX_WORKERS = 8 # نقصناها لـ 15 باش ما يتخنقش السيرفر
+BASE_PORT = 10808
 MAX_LATENCY_MS = 5000
 
 _tls = threading.local()
