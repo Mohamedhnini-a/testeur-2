@@ -15,7 +15,6 @@ SOURCE_URLS = [
 ]
 XRAY = "./xray/xray"
 
-# تم تغيير روابط الفحص لتجنب حظر Cloudflare و 503
 TEST_URLS = [
     "http://www.gstatic.com/generate_204",
     "http://www.google.com/generate_204",
@@ -213,6 +212,10 @@ def main():
                 except Exception as e: 
                     pass
                 
+                # 🛑 Sleep ديال ثانية كل 8 كونفيغات مكتملة لتفادي الضغط
+                if completed % 8 == 0:
+                    time.sleep(1)
+
                 if completed % 10 == 0 or completed == total:
                     print(f"--- [Progress] {completed}/{total} | Working: {working_count} | Remaining: {total - completed} ---", flush=True)
 
