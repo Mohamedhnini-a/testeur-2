@@ -3,24 +3,28 @@ name: Check and Update Working Configs
 on:
   workflow_dispatch:
   schedule:
-    # كل 6 سوايع - UTC
     - cron: "0 */6 * * *"
 
 permissions:
   contents: write
 
+concurrency:
+  group: update-configs
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest
-    # 360 هو أقصى حد كيسمح بيه GitHub Actions (6 سوايع)
     timeout-minutes: 360 
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4 # ✅ إصدار صحيح
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # ضرورية باش الـ rebase يخدم
 
       - name: Setup Python
-        uses: actions/setup-python@v5 # ✅ إصدار صحيح
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -31,7 +35,6 @@ jobs:
 
       - name: Download Xray
         run: |
-          # ملاحظة: الإصدار v26.7.28 مشكوك فيه. هادا إصدار معروف ومستقر:
           XRAY_VERSION="v1.8.24"
           wget -q "https://github.com/XTLS/Xray-core/releases/download/${XRAY_VERSION}/Xray-linux-64.zip" -O xray.zip
           unzip -q xray.zip -d xray
@@ -40,7 +43,6 @@ jobs:
 
       - name: Check configs
         run: |
-          # ✅ زدنا -u باش تشوف اللوغات دغيا
           python -u checker.py
 
       - name: Prepare working_configs.txt
@@ -70,12 +72,13 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes in working_configs.txt"
           else
-            git commit -m "Update working configs"
-            git push
+            git commit -m "Update working configs [skip ci]"
+            git pull --rebase origin main
+            git push origin main
           fi
 
       - name: Upload working configs
-        uses: actions/upload-artifact@v4 # ✅ إصدار صحيح
+        uses: actions/upload-artifact@v4
         with:
           name: working-configs
           path: working_configs.txt
